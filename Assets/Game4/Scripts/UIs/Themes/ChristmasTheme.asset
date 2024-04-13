@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d0075e78a857a249ae26cbc8978af6e, type: 3}
+  m_Name: ChristmasTheme
+  m_EditorClassIdentifier: 
+  MenuBtn: {fileID: 21300000, guid: 4b478cc533f0750429d692646d5acb2c, type: 3}
+  SettingsPanel: {fileID: 21300000, guid: bf4a8e0087c5b2543bd6f375dea3e433, type: 3}
+  SettingsGalleryBtn: {fileID: 21300000, guid: bc010d6e55bd7884ab6bd7a522d7735a, type: 3}
+  SettingsOkBtn: {fileID: 21300000, guid: 0f392ff47d797fc41ac4bbb7f8685fb3, type: 3}
+  SoundOn: {fileID: 21300000, guid: 951d5bfb4a26d1a41bb32c2b307f22bc, type: 3}
+  SoundOff: {fileID: 21300000, guid: a4788d839796048498f3a24aa2f0a7e3, type: 3}
+  GalleryPanel: {fileID: 21300000, guid: 0c9579b13fdd59549afc58bdbf5a0ea1, type: 3}
+  GalleryCloseBtn: {fileID: 21300000, guid: 437290a05c97d2e41ab05216f108a713, type: 3}
+  GalleryUnlockSlot: {fileID: 21300000, guid: 8c0eaa439c1f93e4ba7510a94d90f7ba, type: 3}
+  GalleryLockSlot: {fileID: 21300000, guid: 0c07b07d4c3b5a04f8d402e09725655c, type: 3}
+  GameplayPanel: {fileID: 21300000, guid: ec3203a2f97c5e34fbc6e2ac04e05284, type: 3}
+  GameplayChangeThemeBtn: {fileID: 21300000, guid: 1c1ae59056151eb45a9399ba6669d97e, type: 3}
+  GameplaySettingsBtn: {fileID: 21300000, guid: dd0441f11b675654ea7f6485805e1f35, type: 3}

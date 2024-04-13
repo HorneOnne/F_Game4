@@ -5,9 +5,15 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public static event System.Action<ThemeDataSO> OnThemeChanged;
 
     public List<LevelDataSO> Levels;
-    public LevelDataSO CurrentLevel;
+    [HideInInspector] public LevelDataSO CurrentLevel;
+
+    public List<MahjongSO> GalleryCollections;
+    public ThemeDataSO ValentineTheme;
+    public ThemeDataSO ChristmasTheme;
+    public ThemeDataSO CurrentTheme;
 
     private void Awake()
     {
@@ -24,6 +30,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         CurrentLevel = Levels[0];
+        CurrentTheme = ChristmasTheme;
     }
 
     private void Start()
@@ -37,6 +44,16 @@ public class GameManager : MonoBehaviour
         CurrentLevel = Levels[Random.Range(0, Levels.Count)];
     }
 
- 
+    public void SetChristmasTheme()
+    {
+        OnThemeChanged?.Invoke(ChristmasTheme);
+        CurrentTheme = ChristmasTheme;
+    }
+
+    public void SetValentineTheme()
+    {
+        OnThemeChanged?.Invoke(ValentineTheme);
+        CurrentTheme = ValentineTheme;
+    }
 }
 

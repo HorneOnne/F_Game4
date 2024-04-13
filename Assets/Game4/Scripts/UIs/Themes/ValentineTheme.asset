@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ValentineTheme
   m_EditorClassIdentifier: 
   MenuBtn: {fileID: 21300000, guid: aa78e2f70cb284e48891d04acdff5ef7, type: 3}
+  Background: {fileID: 21300000, guid: 339ac3f0f1b91d74e8900c709fa91314, type: 3}
   SettingsPanel: {fileID: 21300000, guid: e3d2d95c36e5a3b499a2f0beacdf869e, type: 3}
   SettingsGalleryBtn: {fileID: 21300000, guid: 834d2099c60bde04c91eb1c23d78b0c3, type: 3}
   SettingsOkBtn: {fileID: 21300000, guid: 943aecc96c7df7743b371fedc76d4509, type: 3}

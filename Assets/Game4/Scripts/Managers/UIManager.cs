@@ -7,7 +7,8 @@ public class UIManager : MonoBehaviour
     public UIMainmenu UIMainmenu;
     public UISettings UISettings;
     public UIWelcome UIWelcome;
-    public UIAboutGame UIAboutGame;
+    public UIGallery UIGallery;
+    public UIChooseTheme UIChooseTheme;
 
 
 
@@ -30,7 +31,8 @@ public class UIManager : MonoBehaviour
         DisplayMainmenu(false);
         DisplaySettingsMenu(false);
         DisplayUIWelcome(false);
-        DisplayUIAboutGame(false);
+        DisplayUIGallery(false);
+        DisplayUIChooseTheme(false);
     }
 
 
@@ -49,8 +51,13 @@ public class UIManager : MonoBehaviour
         UIWelcome.DisplayCanvas(isActive);
     }
 
-    public void DisplayUIAboutGame(bool isActive)
+    public void DisplayUIGallery(bool isActive)
     {
-        UIAboutGame.DisplayCanvas(isActive);
+        UIGallery.DisplayCanvas(isActive);
+    }
+
+    public void DisplayUIChooseTheme(bool isActive)
+    {
+        UIChooseTheme.DisplayCanvas(isActive);
     }
 }

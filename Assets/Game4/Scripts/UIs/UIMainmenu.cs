@@ -1,15 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class UIMainmenu : CustomCanvas
 {
     public Button PlayBtn;
     public Button SettingsBtn;
-    public Button AboutGameBtn;
     public Button QuitBtn;
 
     private void Start()
     {
+        GameManager.OnThemeChanged += ChangeTheme;
+
         PlayBtn.onClick.AddListener(() =>
         {
             SoundManager.Instance.PlaySound(SoundType.Button, false);
@@ -23,12 +25,6 @@ public class UIMainmenu : CustomCanvas
             UIManager.Instance.DisplaySettingsMenu(true);
         });
 
-        AboutGameBtn.onClick.AddListener(() =>
-        {
-            SoundManager.Instance.PlaySound(SoundType.Button, false);
-            UIManager.Instance.CloseAll();
-            UIManager.Instance.DisplayUIAboutGame(true);
-        });
 
         QuitBtn.onClick.AddListener(() =>
         {
@@ -42,11 +38,19 @@ public class UIMainmenu : CustomCanvas
         });
     }
 
+    private void ChangeTheme(ThemeDataSO data)
+    {
+        PlayBtn.image.sprite = data.MenuBtn;
+        SettingsBtn.image.sprite = data.MenuBtn;
+        QuitBtn.image.sprite = data.MenuBtn;
+    }
+
     private void OnDestroy()
     {
         PlayBtn.onClick.RemoveAllListeners();
         SettingsBtn.onClick.RemoveAllListeners();
-        AboutGameBtn.onClick.RemoveAllListeners();
         QuitBtn.onClick.RemoveAllListeners();
+
+        GameManager.OnThemeChanged -= ChangeTheme;
     }
 }

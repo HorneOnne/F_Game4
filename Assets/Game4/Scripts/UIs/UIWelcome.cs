@@ -1,21 +1,23 @@
-﻿using UnityEngine.UI;
+﻿using System;
+using UnityEngine.UI;
 
 public class UIWelcome : CustomCanvas
 {
-    public Button ContinueBtn;
+    
+    public Button OkBtn;
 
     private void Start()
     {
-        ContinueBtn.onClick.AddListener(() =>
+        OkBtn.onClick.AddListener(() =>
         {
             SoundManager.Instance.PlaySound(SoundType.Button, false);
             UIManager.Instance.CloseAll();
-            UIManager.Instance.DisplayMainmenu(true);
+            UIManager.Instance.DisplayUIChooseTheme(true);
         });
     }
 
     private void OnDestroy()
     {
-        ContinueBtn.onClick.RemoveAllListeners();
+        OkBtn.onClick.RemoveAllListeners();
     }
 }

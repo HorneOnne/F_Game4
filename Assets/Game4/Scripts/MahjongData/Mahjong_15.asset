@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1546e32b19c8daa448e730c853d5d49a, type: 3}
+  m_Name: Mahjong_15
+  m_EditorClassIdentifier: 
+  ID: 15
+  Icon: {fileID: -917050824, guid: fec19a7169e5f324486b7ba4f5612ba3, type: 3}
+  GalleryActiveIcon: {fileID: 21300000, guid: 7074c470af707df43be61dd0a41c271a, type: 3}
+  GalleryDeactiveIcon: {fileID: 21300000, guid: 4d6df6b09e35e694db171379f2590dad, type: 3}

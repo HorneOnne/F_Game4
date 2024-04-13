@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Mahjong_05
   m_EditorClassIdentifier: 
   ID: 5
-  Icon: {fileID: 300764696, guid: ce99774431dfb834e98d7b0e66468c6c, type: 3}
+  Icon: {fileID: -556240275, guid: fec19a7169e5f324486b7ba4f5612ba3, type: 3}
+  GalleryActiveIcon: {fileID: 21300000, guid: 1fb1e961b41ecac4ea5e7cb31928302f, type: 3}
+  GalleryDeactiveIcon: {fileID: 21300000, guid: 50dd6fdb551774f4483e1a7de3f5c624, type: 3}

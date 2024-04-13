@@ -8,6 +8,7 @@ public class ThemeDataSO : ScriptableObject
 {
     [Header("Menu")]
     public Sprite MenuBtn;
+    public Sprite Background;
 
     [Header("Settings")]
     public Sprite SettingsPanel;

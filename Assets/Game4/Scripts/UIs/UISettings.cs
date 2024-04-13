@@ -3,18 +3,22 @@ using UnityEngine;
 
 public class UISettings : CustomCanvas
 {
+    public Image Panel;
     public Button CloseBtn;
-    public Button RestartBtn;
+    public Button GalleryBtn;
 
     public Button SoundBtn;
     public Button MusicBtn;
 
-    [Header("Images")]
-    [SerializeField] private Sprite _activeIcon;
-    [SerializeField] private Sprite _deactiveIcon;
+ 
+
+    //[Header("Images")]
+    //[SerializeField] private Sprite _activeIcon;
+    //[SerializeField] private Sprite _deactiveIcon;
 
     private void Start()
     {
+        GameManager.OnThemeChanged += ChangeTheme;
         UpdateSoundFXUI();
         UpdateMusicUI();
 
@@ -26,18 +30,6 @@ public class UISettings : CustomCanvas
             UIManager.Instance.DisplayMainmenu(true);
         });
 
-        RestartBtn.onClick.AddListener(() =>
-        {
-            SoundManager.Instance.isSoundFXActive = true;
-            SoundManager.Instance.isMusicActive = true;
-            SoundManager.Instance.MuteSoundFX(false);
-            SoundManager.Instance.MuteBackground(false);
-
-            UpdateSoundFXUI();
-            UpdateMusicUI();
-
-            SoundManager.Instance.PlaySound(SoundType.Button, false);
-        });
 
 
         SoundBtn.onClick.AddListener(() =>
@@ -51,15 +43,24 @@ public class UISettings : CustomCanvas
             ToggleMusic();
             SoundManager.Instance.PlaySound(SoundType.Button, false);
         });
+
+        GalleryBtn.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySound(SoundType.Button, false);
+            UIManager.Instance.CloseAll();
+            UIManager.Instance.DisplayUIGallery(true);
+        });
     }
 
     private void OnDestroy()
     {
         CloseBtn.onClick.RemoveAllListeners();
-        RestartBtn.onClick.RemoveAllListeners();
-
         SoundBtn.onClick.RemoveAllListeners();
         MusicBtn.onClick.RemoveAllListeners();
+
+        GalleryBtn.onClick.RemoveAllListeners();
+
+        GameManager.OnThemeChanged -= ChangeTheme;
     }
 
 
@@ -76,11 +77,11 @@ public class UISettings : CustomCanvas
     {
         if (SoundManager.Instance.isSoundFXActive)
         {
-            SoundBtn.image.sprite = _activeIcon;
+            SoundBtn.image.sprite = GameManager.Instance.CurrentTheme.SoundOn;
         }
         else
         {
-            SoundBtn.image.sprite = _deactiveIcon;
+            SoundBtn.image.sprite = GameManager.Instance.CurrentTheme.SoundOff;
         }
     }
 
@@ -96,12 +97,37 @@ public class UISettings : CustomCanvas
     {
         if (SoundManager.Instance.isMusicActive)
         {
-            MusicBtn.image.sprite = _activeIcon;
+            MusicBtn.image.sprite = GameManager.Instance.CurrentTheme.SoundOn; 
         }
         else
         {
-            MusicBtn.image.sprite = _deactiveIcon;
+            MusicBtn.image.sprite = GameManager.Instance.CurrentTheme.SoundOff;
         }
     }
 
+
+    private void ChangeTheme(ThemeDataSO data)
+    {
+        Panel.sprite = data.SettingsPanel;
+        CloseBtn.image.sprite = data.SettingsOkBtn;
+        GalleryBtn.image.sprite = data.SettingsGalleryBtn;
+
+        if(SoundManager.Instance.isSoundFXActive)
+        {
+            SoundBtn.image.sprite = data.SoundOn;
+        }
+        else
+        {
+            SoundBtn.image.sprite = data.SoundOff;
+        }
+
+        if (SoundManager.Instance.isMusicActive)
+        {
+            MusicBtn.image.sprite = data.SoundOn;
+        }
+        else
+        {
+            MusicBtn.image.sprite = data.SoundOff;
+        }
+    }
 }

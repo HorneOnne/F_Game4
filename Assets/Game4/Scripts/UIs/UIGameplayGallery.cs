@@ -5,6 +5,7 @@ using System;
 
 public class UIGameplayGallery : CustomCanvas
 {
+    public Image Panel;
     public Button CloseBtn;
     public Transform ContentParent;
     private List<UISlots> _slots;
@@ -34,6 +35,8 @@ public class UIGameplayGallery : CustomCanvas
 
         GameManager.OnThemeChanged += UpdateTheme;
         GameManager.OnGallaryUpdate += UpdateGallary;
+
+        UpdateTheme(GameManager.Instance.CurrentTheme);
     }
 
     private void OnDestroy()
@@ -55,8 +58,10 @@ public class UIGameplayGallery : CustomCanvas
             {
                 _slots[i].Background.sprite = data.GalleryLockSlot;
             }
-
         }
+
+        CloseBtn.image.sprite = data.GalleryCloseBtn;
+        Panel.sprite = data.GalleryPanel;
     }
 
 
@@ -73,6 +78,7 @@ public class UIGameplayGallery : CustomCanvas
                 _slots[i].Icon.sprite = GameManager.Instance.GalleryCollections[i].GalleryDeactiveIcon;
             }
         }
+
     }
 
 }

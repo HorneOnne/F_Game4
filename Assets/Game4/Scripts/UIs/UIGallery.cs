@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class UIGallery : CustomCanvas
 {
+    public Image Panel;
     public Button CloseBtn;
     public Transform ContentParent;
     private List<UISlots> _slots;
@@ -52,9 +53,11 @@ public class UIGallery : CustomCanvas
             else
             {
                 _slots[i].Background.sprite = data.GalleryLockSlot;
-            }
-         
+            }     
         }
+
+        CloseBtn.image.sprite = data.GalleryCloseBtn;
+        Panel.sprite = data.GalleryPanel;
     }
 }
 

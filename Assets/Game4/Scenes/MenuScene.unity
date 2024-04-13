@@ -3478,7 +3478,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 198, y: 198}
-  m_Spacing: {x: 32, y: 46}
+  m_Spacing: {x: 32, y: 40}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!222 &3808604631488328262
@@ -3518,6 +3518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1278413dd44c24fa6dbbb3c137f89f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Panel: {fileID: 6284433239071228393}
   CloseBtn: {fileID: 2374801537273483569}
   ContentParent: {fileID: 5976070488133078504}
   _slotPrefab: {fileID: 4077538308652596332, guid: 6e74fc96776ea7a42b62d105172de454, type: 3}
@@ -4204,8 +4205,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -63}
-  m_SizeDelta: {x: -200, y: -530.38}
+  m_AnchoredPosition: {x: 0, y: -73.90503}
+  m_SizeDelta: {x: -200, y: -552.18994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6166140963475058201
 MonoBehaviour:
@@ -4459,7 +4460,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7002863915164976535}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 519420031}
@@ -4473,7 +4474,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 1959759761
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!1 &6447390575454840613
 GameObject:
@@ -5061,7 +5062,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3165400216260837535}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 519420031}

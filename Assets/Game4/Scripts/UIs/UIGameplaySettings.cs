@@ -44,6 +44,8 @@ public class UIGameplaySettings : CustomCanvas
             SoundManager.Instance.PlaySound(SoundType.Button, false);
             UIGameplayManager.Instance.DisplayUIGameplayGallery(true);
         });
+
+        ChangeTheme(GameManager.Instance.CurrentTheme);
     }
 
     private void OnDestroy()
@@ -104,7 +106,7 @@ public class UIGameplaySettings : CustomCanvas
     {
         Panel.sprite = data.SettingsPanel;
         CloseBtn.image.sprite = data.SettingsOkBtn;
-        //GalleryBtn.image.sprite = data.SettingsGalleryBtn;
+        GalleryBtn.image.sprite = data.SettingsGalleryBtn;
 
         if (SoundManager.Instance.isSoundFXActive)
         {

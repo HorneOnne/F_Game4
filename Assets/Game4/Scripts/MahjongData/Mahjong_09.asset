@@ -16,3 +16,4 @@ MonoBehaviour:
   Icon: {fileID: -1432504477, guid: fec19a7169e5f324486b7ba4f5612ba3, type: 3}
   GalleryActiveIcon: {fileID: 21300000, guid: b6bdca5c4742ed944a148c9649f95e2c, type: 3}
   GalleryDeactiveIcon: {fileID: 21300000, guid: f0e4956c27d13694681d00fc7cd8f0bd, type: 3}
+  Unlock: 0

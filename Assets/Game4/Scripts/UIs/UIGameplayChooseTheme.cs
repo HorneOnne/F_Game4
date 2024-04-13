@@ -1,4 +1,5 @@
-﻿using UnityEngine.UI;
+﻿using System;
+using UnityEngine.UI;
 
 public class UIGameplayChooseTheme : CustomCanvas
 {
@@ -37,8 +38,9 @@ public class UIGameplayChooseTheme : CustomCanvas
             GameManager.Instance.SetValentineTheme();
             UIGameplayManager.Instance.DisplayUIGameplayChooseTheme(false);
         });
-    }
 
+
+    }
 
 
     private void OnDestroy()

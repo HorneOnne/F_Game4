@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f421214282fbb4f8fded2f8edbbf1d, type: 3}
   m_Name: Level_00
   m_EditorClassIdentifier: 
-  Layer1: {x: 3, y: 2, z: 3}
-  Layer2: {x: 2, y: 2, z: 2}
-  Layer3: {x: 3, y: 2, z: 3}
+  CenterPosition: {x: 0, y: 0.65, z: 0}
+  Layer1: {x: 6, y: 6, z: 6, w: 6}
+  Layer2: {x: 0, y: 5, z: 5, w: 5}
+  Layer3: {x: 0, y: 0, z: 4, w: 4}

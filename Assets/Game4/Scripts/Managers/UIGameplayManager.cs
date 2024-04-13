@@ -6,9 +6,9 @@ public class UIGameplayManager : MonoBehaviour
 
     public UIGameplay UIGameplay;
     public UIWin UIWin;
-    public UIGameover UIGameover;
     public UIGameplaySettings UIGameplaySettings;
-
+    public UIGameplayChooseTheme UIGameplayChooseTheme;
+    public UIGameplayGallery UIGameplayGallery;
 
 
 
@@ -28,8 +28,9 @@ public class UIGameplayManager : MonoBehaviour
     public void CloseAll()
     {
         DisplayUIWin(false);
-        DisplayUIGameover(false);
         DisplayUIGameplaySettings(false);
+        DisplayUIGameplayChooseTheme(false);
+        DisplayUIGameplayGallery(false);
     }
 
     public void DisplayUIWin(bool isActive)
@@ -37,15 +38,21 @@ public class UIGameplayManager : MonoBehaviour
         UIWin.DisplayCanvas(isActive);
     }
 
-    public void DisplayUIGameover(bool isActive)
-    {
-        UIGameover.DisplayCanvas(isActive);
-    }
 
 
     public void DisplayUIGameplaySettings(bool isActive)
     {
         UIGameplaySettings.DisplayCanvas(isActive);
+    }
+
+    public void DisplayUIGameplayChooseTheme(bool isActive)
+    {
+        UIGameplayChooseTheme.DisplayCanvas(isActive);
+    }
+
+    public void DisplayUIGameplayGallery(bool isActive)
+    {
+        UIGameplayGallery.DisplayCanvas(isActive);
     }
 
 }

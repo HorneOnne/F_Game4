@@ -78,9 +78,8 @@ public class GameplayManager : MonoBehaviour
         {
             default: break;
             case GameState.WAITING:
-                StartCoroutine(Utilities.WaitAfter(1.0f, () =>
+                StartCoroutine(Utilities.WaitAfter(0.2f, () =>
                 {
-                    TimerManager.Instance.StartTimer();
                     ChangeGameState(GameState.PLAYING);
                 }));
 
@@ -91,7 +90,7 @@ public class GameplayManager : MonoBehaviour
                 OnPlaying?.Invoke();
                 break;
             case GameState.WIN:
-                StartCoroutine(Utilities.WaitAfter(0.25f, () =>
+                StartCoroutine(Utilities.WaitAfter(2.0f, () =>
                 {
                     SoundManager.Instance.PlaySound(SoundType.Button, false);
                     UIGameplayManager.Instance.DisplayUIWin(true);
@@ -99,11 +98,7 @@ public class GameplayManager : MonoBehaviour
                 OnWin?.Invoke();
                 break;
             case GameState.GAMEOVER:
-                StartCoroutine(Utilities.WaitAfter(0.25f, () =>
-                {
-                    SoundManager.Instance.PlaySound(SoundType.HitBlock, false);
-                    UIGameplayManager.Instance.DisplayUIGameover(true);
-                }));
+              
                 OnGameOver?.Invoke();
                 break;
             case GameState.PAUSE:

@@ -29,4 +29,9 @@ public class ThemeDataSO : ScriptableObject
     public Sprite GameplayChangeThemeBtn;
     public Sprite GameplaySettingsBtn;
 
+
+    [Header("Win")]
+    public Sprite WinPanel;
+    public Sprite WinNextBtn;
+
 }

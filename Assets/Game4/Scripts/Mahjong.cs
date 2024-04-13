@@ -13,7 +13,7 @@ public class Mahjong : MonoBehaviour
     private Vector3 _selectedOffestPosition = new Vector3(0f, 0.15f, 0);
     public bool CanSelect { get; private set; }
     [SerializeField] private LayerMask _mahjongLayer;
-    private Collider2D[] _colliders = new Collider2D[5];
+    private Collider2D[] _colliders = new Collider2D[10];
 
 
     private void Awake()

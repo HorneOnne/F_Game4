@@ -9,34 +9,36 @@ public class GameControllers : MonoBehaviour
     public static event System.Action OnCompleteRequest;
     public Transform Center;
 
-    [SerializeField] private List<MahjongSO> _allMahjongData;
+    private List<MahjongSO> _allMahjongData;
     [SerializeField] private LayerMask _mahjongLayer;
 
 
-    private Vector2 _mahjongOffset = new Vector2(1, 1.35f);
-    private List<Mahjong> Mahjongs = new();
+    private Vector2 _mahjongOffset = new Vector2(1.5f, 1.75f);
+    [HideInInspector] public List<Mahjong> Mahjongs = new();
     private List<MahjongSO> _initializeData;
     private int _currentGetDataIndex = 0;
 
 
-    private Vector3Int layer1;
-    private Vector3Int layer2;
-    private Vector3Int layer3;
+    private Vector4 layer1;
+    private Vector4 layer2;
+    private Vector4 layer3;
 
 
-    public int Layer1Size { get => layer1.x + layer1.y + layer1.z; }
-    public int Layer2Size { get => layer2.x + layer2.y + layer2.z; }
-    public int Layer3Size { get => layer3.x + layer3.y + layer3.z; }
+
+    public int Layer1Size { get => (int)layer1.x + (int)layer1.y + (int)layer1.z + (int)layer1.w; }
+    public int Layer2Size { get => (int)layer2.x + (int)layer2.y + (int)layer2.z + (int)layer2.w; }
+    public int Layer3Size { get => (int)layer3.x + (int)layer3.y + (int)layer3.z + (int)layer3.w; }
 
     private System.Random rng;
 
-
+    // Win effect
+    private Flash _flashEffectInstance;
 
     public enum PlayState
     {
         CheckingCanplayable,
         Default,
-        Checking
+        Checking,
     }
     public PlayState State;
     private float _checkTimer = 0.0f;
@@ -46,35 +48,34 @@ public class GameControllers : MonoBehaviour
     public Mahjong SelectionB;
 
 
-    // game event
-    public MahjongSO RequestMahjong { get; private set; }
-    public bool CountDown { get; private set; } = false;
-    private float _eventTime = 15.0f; // time in seconds
-    public float EventTimer { get; private set; } = 0.0f;
-
 
     private void Awake()
     {
         Instance = this;
         long seed = System.DateTime.Now.Ticks;
         rng = new System.Random((int)seed);
+
+        _allMahjongData = new();
+        for (int i = 0; i < GameManager.Instance.GalleryCollections.Count; i++)
+        {
+            _allMahjongData.Add(GameManager.Instance.GalleryCollections[i]);
+        }
+
+
     }
 
     private void Start()
     {
-        TimerManager.OnEventTimeReached += AddGameplayEvent;
-        OnMatched += CheckRequest;
-
         layer1 = GameManager.Instance.CurrentLevel.Layer1;
         layer2 = GameManager.Instance.CurrentLevel.Layer2;
         layer3 = GameManager.Instance.CurrentLevel.Layer3;
-
+        Center.position = GameManager.Instance.CurrentLevel.CenterPosition;
 
         State = PlayState.CheckingCanplayable;
-        int size = layer1.x + layer1.y + layer1.z + layer2.x + layer2.y + layer2.z + layer3.x + layer3.y + layer3.z;
+        int size = Layer1Size + Layer2Size + Layer3Size;
         if (size % 2 != 0)
         {
-            Debug.Log("Size not a even number.");
+            Debug.Log($"Size not a even number.: {size}");
         }
 
         _initializeData = new();
@@ -92,29 +93,20 @@ public class GameControllers : MonoBehaviour
         }
         ShuffleList(_initializeData);
 
-        GenerateLayerOfMahjong(layer1.x, layer1.y, layer1.z, 0);
-        GenerateLayerOfMahjong(layer2.x, layer2.y, layer2.z, 1);
-        GenerateLayerOfMahjong(layer3.x, layer3.y, layer3.z, 2);
+        GenerateLayerOfMahjong((int)layer1.x, (int)layer1.y, (int)layer1.z, (int)layer1.w, 0);
+        GenerateLayerOfMahjong((int)layer2.x, (int)layer2.y, (int)layer2.z, (int)layer2.w, 1);
+        GenerateLayerOfMahjong((int)layer3.x, (int)layer3.y, (int)layer3.z, (int)layer3.w, 2);
+
     }
 
 
-    private void OnDestroy()
-    {
-        TimerManager.OnEventTimeReached -= AddGameplayEvent;
-        OnMatched -= CheckRequest;
-    }
 
-    public void AddGameplayEvent()
-    {
-        RequestMahjong = Mahjongs[0].Data;
-        EventTimer = _eventTime;
-        CountDown = true;
-    }
     public void RecreateTable()
     {
+
         _currentGetDataIndex = 0;
         _initializeData.Clear();
-        for(int i = 0; i < Mahjongs.Count; i++)
+        for (int i = 0; i < Mahjongs.Count; i++)
         {
             _initializeData.Add(Mahjongs[i].Data);
         }
@@ -125,163 +117,162 @@ public class GameControllers : MonoBehaviour
         }
         Mahjongs.Clear();
 
-        GenerateLayerOfMahjong(layer1.x, layer1.y, layer1.z, 0);
-        GenerateLayerOfMahjong(layer2.x, layer2.y, layer2.z, 1);
-        GenerateLayerOfMahjong(layer3.x, layer3.y, layer3.z, 2);
 
+        GenerateLayerOfMahjong((int)layer1.x, (int)layer1.y, (int)layer1.z, (int)layer1.w, 0);
+        GenerateLayerOfMahjong((int)layer2.x, (int)layer2.y, (int)layer2.z, (int)layer2.w, 1);
+        GenerateLayerOfMahjong((int)layer3.x, (int)layer3.y, (int)layer3.z, (int)layer3.w, 2);
     }
 
 
     private void Update()
     {
-        if (GameplayManager.Instance.CurrentState != GameplayManager.GameState.PLAYING) return;
-  
-        switch (State)
+        if (GameplayManager.Instance.CurrentState == GameplayManager.GameState.PLAYING)
         {
-            case PlayState.CheckingCanplayable:
-                if(CanPlayble())
-                {
-                    State = PlayState.Default;
-                }
-                else
-                {
-                    RecreateTable();
-                }
-                break;
-            default:
-            case PlayState.Default:
-                if (Input.GetMouseButtonDown(0))
-                {
-                    // Cast a ray from the mouse position
-                    Vector2 raycastOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    RaycastHit2D[] hits = Physics2D.RaycastAll(raycastOrigin, Vector2.zero, Mathf.Infinity, _mahjongLayer);
-
-                    // Check if any objects are hit
-                    if (hits.Length > 0)
+            switch (State)
+            {
+                case PlayState.CheckingCanplayable:
+                    if (CanPlayble())
                     {
-                        // Find the object with the highest sorting order
-                        GameObject highestOrderObject = FindObjectWithHighestSortingOrder(hits);
+                        State = PlayState.Default;
+                    }
+                    else
+                    {
+                        if (Mahjongs.Count <= 1) return;
+                        RecreateTable();
+                    }
+                    break;
+                default:
+                case PlayState.Default:
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        // Cast a ray from the mouse position
+                        Vector2 raycastOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        RaycastHit2D[] hits = Physics2D.RaycastAll(raycastOrigin, Vector2.zero, Mathf.Infinity, _mahjongLayer);
 
-                        // Handle the highest order object
-                        if (highestOrderObject != null)
+                        // Check if any objects are hit
+                        if (hits.Length > 0)
                         {
-                            //Debug.Log("Object with highest sorting order hit: " + highestOrderObject.name);
-                            // You can perform additional actions here, such as accessing properties or calling methods on the highest order object
+                            // Find the object with the highest sorting order
+                            GameObject highestOrderObject = FindObjectWithHighestSortingOrder(hits);
 
-                            if (highestOrderObject.gameObject.TryGetComponent<Mahjong>(out Mahjong selectedMahjong))
+                            // Handle the highest order object
+                            if (highestOrderObject != null)
                             {
-                                if (selectedMahjong.CanSelect == false) break;
-                                Select(selectedMahjong);
+                                //Debug.Log("Object with highest sorting order hit: " + highestOrderObject.name);
+                                // You can perform additional actions here, such as accessing properties or calling methods on the highest order object
 
-                                if (SelectionA != null && SelectionB != null)
+                                if (highestOrderObject.gameObject.TryGetComponent<Mahjong>(out Mahjong selectedMahjong))
                                 {
-                                    State = PlayState.Checking;
+                                    if (selectedMahjong.CanSelect == false) break;
+                                    Select(selectedMahjong);
 
+                                    if (SelectionA != null && SelectionB != null)
+                                    {
+                                        State = PlayState.Checking;
+
+                                    }
                                 }
+
+
                             }
-
-
                         }
-                    }
-                    else
-                    {
-                        // If the ray doesn't hit any object
-                        Debug.Log("No object hit.");
-                    }
+                        else
+                        {
+                            // If the ray doesn't hit any object
+                            Debug.Log("No object hit.");
+                        }
 
-                }
-                break;
-            case PlayState.Checking:
-                _checkTimer += Time.deltaTime;
-                if (_checkTimer > 0.25f)
+                    }
+                    break;
+                case PlayState.Checking:
+                    _checkTimer += Time.deltaTime;
+                    if (_checkTimer > 0.25f)
+                    {
+                        //Debug.Log(Mahjongs.Count);
+                        _checkTimer = 0.0f;
+                        if (CheckMatch(SelectionA, SelectionB))
+                        {
+                            SoundManager.Instance.PlaySound(SoundType.Button, false);
+                            // Match
+                            OnMatched?.Invoke(SelectionA.Data);
+
+                            SelectionA.SetMatchPhysics();
+                            SelectionB.SetMatchPhysics();
+
+
+                            var a = SelectionA.gameObject;
+                            var b = SelectionB.gameObject;
+
+
+
+                            Mahjongs.Remove(SelectionA);
+                            Mahjongs.Remove(SelectionB);
+
+                            Destroy(a.gameObject, 2.0f);
+                            Destroy(b.gameObject, 2.0f);
+
+                            SelectionA = null;
+                            SelectionB = null;
+                        }
+                        else
+                        {
+                            SoundManager.Instance.PlaySound(SoundType.HitBlock, false);
+                            // Not match
+                            //Debug.Log("No match");
+
+                            // reset selection
+                            SelectionA.SelectEffect(false);
+                            SelectionB.SelectEffect(false);
+                            SelectionA = null;
+                            SelectionB = null;
+                        }
+
+                        State = PlayState.CheckingCanplayable;
+                    }
+                    break;
+            }
+        }
+        else if (GameplayManager.Instance.CurrentState == GameplayManager.GameState.WIN)
+        {
+            Vector3 direction = Vector2.zero- (Vector2)Mahjongs[0].transform.position;
+            Mahjongs[0].transform.position += direction * 2f * Time.deltaTime;
+
+            if (Vector2.Distance(Mahjongs[0].transform.position, Vector2.zero) < 0.01f)
+            {
+                if (_flashEffectInstance != null)
                 {
-                    //Debug.Log(Mahjongs.Count);
-                    _checkTimer = 0.0f;
-                    if (CheckMatch(SelectionA, SelectionB))
+                    var flashPrefab = Resources.Load<Flash>("Flash");
+                    if(flashPrefab != null)
                     {
-                        SoundManager.Instance.PlaySound(SoundType.Button, false);
-                        // Match
-                        OnMatched?.Invoke(SelectionA.Data);
-
-                        SelectionA.SetMatchPhysics();
-                        SelectionB.SetMatchPhysics();
-
-
-                        var a = SelectionA.gameObject;
-                        var b = SelectionB.gameObject;
-
-
-
-                        Mahjongs.Remove(SelectionA);
-                        Mahjongs.Remove(SelectionB);
-
-                        Destroy(a.gameObject, 2.0f);
-                        Destroy(b.gameObject, 2.0f);
-
-                        SelectionA = null;
-                        SelectionB = null;
+                        _flashEffectInstance = Instantiate(flashPrefab, Vector2.zero, Quaternion.identity);
                     }
-                    else
-                    {
-                        SoundManager.Instance.PlaySound(SoundType.HitBlock, false);
-                        // Not match
-                        //Debug.Log("No match");
-
-                        // reset selection
-                        SelectionA.SelectEffect(false);
-                        SelectionB.SelectEffect(false);
-                        SelectionA = null;
-                        SelectionB = null;
-                    }
-
-                    State = PlayState.CheckingCanplayable;
+                 
                 }
-                break;
-        }
-
-
-        if(CountDown)
-        {
-            EventTimer -= Time.deltaTime;
-            if(EventTimer < 0.0f)
-            {
-                EventTimer = 0.0f;
-                GameplayManager.Instance.ChangeGameState(GameplayManager.GameState.GAMEOVER);
             }
         }
-    }
-    private void CheckRequest(MahjongSO data)
-    {
-        if (CountDown)
-        {
-            if (RequestMahjong.ID == data.ID)
-            {
-                CountDown = false;
-                EventTimer = 0.0f;
-                OnCompleteRequest?.Invoke();
-            }
-        }
+
+
     }
 
-    private void GenerateLayerOfMahjong(int line1Width, int line2Width, int line3Width, int layer)
+    private void GenerateLayerOfMahjong(int line1Width, int line2Width, int line3Width, int line4Width, int layer)
     {
         float startLine1 = Center.position.x - ((line1Width - 1) / 2.0f * _mahjongOffset.x);
         for (int x = 0; x < line1Width; x++)
         {
-            Vector2 position = new Vector2(startLine1 + x * _mahjongOffset.x, Center.position.y + _mahjongOffset.y) + new Vector2(layer * 0.1f, layer * 0.1f);
-          
-            if(_currentGetDataIndex < _initializeData.Count)
+            Vector2 position = new Vector2(startLine1 + x * _mahjongOffset.x, Center.position.y + _mahjongOffset.y) + new Vector2(0, layer * 0.75f);
+
+            if (_currentGetDataIndex < _initializeData.Count)
             {
                 var data = _initializeData[_currentGetDataIndex];
                 _currentGetDataIndex++;
                 Mahjongs.Add(CreateMahjong(data, position, layer));
-            }       
+            }
         }
 
         float startLine2 = Center.position.x - ((line2Width - 1) / 2.0f * _mahjongOffset.x);
         for (int x = 0; x < line2Width; x++)
         {
-            Vector2 position = new Vector2(startLine2 + x * _mahjongOffset.x, Center.position.y) + new Vector2(layer * 0.1f, layer * 0.1f);
+            Vector2 position = new Vector2(startLine2 + x * _mahjongOffset.x, Center.position.y) + new Vector2(0, layer * 0.75f);
 
             if (_currentGetDataIndex < _initializeData.Count)
             {
@@ -294,7 +285,19 @@ public class GameControllers : MonoBehaviour
         float startLine3 = Center.position.x - ((line3Width - 1) / 2.0f * _mahjongOffset.x);
         for (int x = 0; x < line3Width; x++)
         {
-            Vector2 position = new Vector2(startLine3 + x * _mahjongOffset.x, Center.position.y - _mahjongOffset.y) + new Vector2(layer * 0.1f, layer * 0.1f);
+            Vector2 position = new Vector2(startLine3 + x * _mahjongOffset.x, Center.position.y - _mahjongOffset.y) + new Vector2(0, layer * 0.75f);
+            if (_currentGetDataIndex < _initializeData.Count)
+            {
+                var data = _initializeData[_currentGetDataIndex];
+                _currentGetDataIndex++;
+                Mahjongs.Add(CreateMahjong(data, position, layer));
+            }
+        }
+
+        float startLine4 = Center.position.x - ((line4Width - 1) / 2.0f * _mahjongOffset.x);
+        for (int x = 0; x < line4Width; x++)
+        {
+            Vector2 position = new Vector2(startLine4 + x * _mahjongOffset.x, Center.position.y - (_mahjongOffset.y * 2)) + new Vector2(0, layer * 0.75f);
             if (_currentGetDataIndex < _initializeData.Count)
             {
                 var data = _initializeData[_currentGetDataIndex];
@@ -304,22 +307,22 @@ public class GameControllers : MonoBehaviour
         }
     }
 
-    public Vector2 GetPosition(int line, int lineWidth, int layer)
-    {
-        float startLine = Center.position.x - ((lineWidth - 1) / 2.0f * _mahjongOffset.x);
-        if (line == 1)
-        {
-            return new Vector2(line + Random.Range(0, startLine) * _mahjongOffset.x, Center.position.y + _mahjongOffset.y) + new Vector2(layer * 0.1f, layer * 0.1f);
-        }
-        else if (line == 2)
-        {
-            return new Vector2(line + Random.Range(0, startLine) * _mahjongOffset.x, Center.position.y) + new Vector2(layer * 0.1f, layer * 0.1f);
-        }
-        else
-        {
-            return new Vector2(line + Random.Range(0, startLine) * _mahjongOffset.x, Center.position.y - _mahjongOffset.y) + new Vector2(layer * 0.1f, layer * 0.1f);
-        }
-    }
+    //public Vector2 GetPosition(int line, int lineWidth, int layer)
+    //{
+    //    float startLine = Center.position.x - ((lineWidth - 1) / 2.0f * _mahjongOffset.x);
+    //    if (line == 1)
+    //    {
+    //        return new Vector2(line + Random.Range(0, startLine) * _mahjongOffset.x, Center.position.y + _mahjongOffset.y) + new Vector2(layer * 0.1f, layer * 0.1f);
+    //    }
+    //    else if (line == 2)
+    //    {
+    //        return new Vector2(line + Random.Range(0, startLine) * _mahjongOffset.x, Center.position.y) + new Vector2(layer * 0.1f, layer * 0.1f);
+    //    }
+    //    else
+    //    {
+    //        return new Vector2(line + Random.Range(0, startLine) * _mahjongOffset.x, Center.position.y - _mahjongOffset.y) + new Vector2(layer * 0.1f, layer * 0.1f);
+    //    }
+    //}
 
     public Mahjong CreateMahjong(MahjongSO data, Vector2 position, int layer)
     {
@@ -384,13 +387,20 @@ public class GameControllers : MonoBehaviour
     }
 
 
-   
+
     private bool CanPlayble()
     {
-        if (Mahjongs.Count == 0)
+        if (Mahjongs.Count == 1)
         {
-            Debug.Log("Win");
             GameplayManager.Instance.ChangeGameState(GameplayManager.GameState.WIN);
+            for(int i = 0; i < GameManager.Instance.GalleryCollections.Count; i++)
+            {
+                if (GameManager.Instance.GalleryCollections[i].ID == Mahjongs[0].Data.ID)
+                {
+                    GameManager.Instance.GalleryCollections[i].Unlock = true;
+                }
+            }
+            GameManager.Instance.TriggerGallaryUpdated();
             return false;
         }
         for (int i = 0; i < Mahjongs.Count; i++)
@@ -411,7 +421,7 @@ public class GameControllers : MonoBehaviour
 
         return false;
     }
- 
+
     void ShuffleList<T>(List<T> list)
     {
         int n = list.Count;

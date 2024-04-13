@@ -26,3 +26,5 @@ MonoBehaviour:
   GameplayPanel: {fileID: 21300000, guid: ec3203a2f97c5e34fbc6e2ac04e05284, type: 3}
   GameplayChangeThemeBtn: {fileID: 21300000, guid: 1c1ae59056151eb45a9399ba6669d97e, type: 3}
   GameplaySettingsBtn: {fileID: 21300000, guid: dd0441f11b675654ea7f6485805e1f35, type: 3}
+  WinPanel: {fileID: 21300000, guid: 012317a23c11a244caf44e8ce7de3069, type: 3}
+  WinNextBtn: {fileID: 21300000, guid: fc7db4e8aade3304eb53bdc8859448a2, type: 3}

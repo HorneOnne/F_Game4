@@ -10,11 +10,7 @@ public class UISettings : CustomCanvas
     public Button SoundBtn;
     public Button MusicBtn;
 
- 
 
-    //[Header("Images")]
-    //[SerializeField] private Sprite _activeIcon;
-    //[SerializeField] private Sprite _deactiveIcon;
 
     private void Start()
     {

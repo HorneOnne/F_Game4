@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public static event System.Action<ThemeDataSO> OnThemeChanged;
+    public static event System.Action OnGallaryUpdate;
 
     public List<LevelDataSO> Levels;
     [HideInInspector] public LevelDataSO CurrentLevel;
@@ -54,6 +55,10 @@ public class GameManager : MonoBehaviour
     {
         OnThemeChanged?.Invoke(ValentineTheme);
         CurrentTheme = ValentineTheme;
+    }
+    public void TriggerGallaryUpdated()
+    {
+        OnGallaryUpdate?.Invoke();
     }
 }
 

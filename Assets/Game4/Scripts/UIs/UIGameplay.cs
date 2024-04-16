@@ -28,6 +28,14 @@ public class UIGameplay : CustomCanvas
 
     }
 
+    private void Update()
+    {
+        // Handle back button in android devices
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Loader.Load(Loader.Scene.MenuScene);
+        }
+    }
 
     private void OnDestroy()
     {

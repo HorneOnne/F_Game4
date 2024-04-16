@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public ThemeDataSO ChristmasTheme;
     public ThemeDataSO CurrentTheme;
 
+    public bool ShowWelcome;
+
     private void Awake()
     {
         // Check if an instance already exists, and destroy the duplicate
@@ -32,6 +34,8 @@ public class GameManager : MonoBehaviour
 
         CurrentLevel = Levels[0];
         CurrentTheme = ChristmasTheme;
+
+        ShowWelcome = true;
     }
 
     private void Start()

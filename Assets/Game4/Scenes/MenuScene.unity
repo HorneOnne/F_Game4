@@ -455,7 +455,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403041377}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 519420031}
@@ -1361,6 +1361,7 @@ MonoBehaviour:
   ValentineTheme: {fileID: 11400000, guid: f4052b538843c62408d4355a5066f770, type: 2}
   ChristmasTheme: {fileID: 11400000, guid: 071cbebf8c40c0d47855de2b92f51659, type: 2}
   CurrentTheme: {fileID: 0}
+  ShowWelcome: 0
 --- !u!1 &1242321002
 GameObject:
   m_ObjectHideFlags: 0
@@ -4460,7 +4461,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7002863915164976535}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 519420031}

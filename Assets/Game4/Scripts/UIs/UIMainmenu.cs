@@ -36,6 +36,8 @@ public class UIMainmenu : CustomCanvas
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
         });
+
+        ChangeTheme(GameManager.Instance.CurrentTheme);
     }
 
     private void ChangeTheme(ThemeDataSO data)

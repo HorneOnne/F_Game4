@@ -46,6 +46,8 @@ public class UISettings : CustomCanvas
             UIManager.Instance.CloseAll();
             UIManager.Instance.DisplayUIGallery(true);
         });
+
+        ChangeTheme(GameManager.Instance.CurrentTheme);
     }
 
     private void OnDestroy()

@@ -34,6 +34,7 @@ public class UIGallery : CustomCanvas
         });
 
         GameManager.OnThemeChanged += UpdateTheme;
+        UpdateTheme(GameManager.Instance.CurrentTheme);
     }
 
     private void OnDestroy()
